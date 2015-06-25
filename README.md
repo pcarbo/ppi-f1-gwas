@@ -8,7 +8,7 @@ inhibition in a panel of inbred F1 mice."
 
 Copyright (c) 2014, Laura Sittig, Kyle Engel and Peter Carbonetto
 
-The lgsmfear project repository is free software: you can redistribute
+The ppi-f1-gwas project repository is free software: you can redistribute
 it and/or modify it under the terms of the
 [GNU General Public License](http://www.gnu.org/licenses/gpl.html) as
 published by the Free Software Foundation, either version 3 of the
