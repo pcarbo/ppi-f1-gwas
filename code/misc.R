@@ -1,26 +1,32 @@
-# This file contains miscellaneous functions
+# This file contains miscellaneous functions.
 
-# Combines cat and paste into one function
-cp0 <- function(...) {
+# ----------------------------------------------------------------------
+# Combines cat and paste into one function.
+cp0 <- function(...)
   cat(paste0(...))
-}
 
-# Converts a factor vector to a numeric vector
-as.numeric.factor <- function(x) { as.numeric(levels(x)[x]) }
+# ----------------------------------------------------------------------
+# Converts a factor vector to a numeric vector.
+as.numeric.factor <- function(x)
+  as.numeric(levels(x)[x])
 
-# Prints specified symbol specified times in the console (to be used to separate steps)
-print.separation <- function(symbol = "_", n = 80) {
-  cat(paste(rep(symbol, n), collapse = ""), "\n")
-}
+# ----------------------------------------------------------------------
+# Prints specified symbol specified times in the console (to be used
+# to separate steps).
+print.separation <- function(symbol = "_", n = 80)
+  cat(paste(rep(symbol,n),collapse = ""),"\n")
 
-# Adds a row into a data frame
+# ----------------------------------------------------------------------
+# Adds a row into a data frame.
 insert.row <- function(original, new.row, row.ind) {
-  original[seq(row.ind + 1, nrow(original) + 1), ] <- original[seq(row.ind, nrow(original)), ]
-  original[row.ind, ] <- new.row
-  return (original)
+  original[seq(row.ind + 1,nrow(original) + 1),] <-
+    original[seq(row.ind,nrow(original)),]
+  original[row.ind,] <- new.row
+  return(original)
 }
 
-# Adds a column into a data frame
+# ----------------------------------------------------------------------
+# Adds a column into a data frame.
 insert.col <- function(original, new.col, col.ind, col.name) {
   orig.col <- ncol(original)
   original <- cbind(original, rep(-1, nrow(original)))
@@ -33,13 +39,14 @@ insert.col <- function(original, new.col, col.ind, col.name) {
 
 # Creates binary variables from categorical variables
 binary.from.categorical <- function(categorical.vector, col.names) {
-  # Creates binary factor for each 'level' of the categorical variable
+  
+  # Creates binary factor for each 'level' of the categorical variable.
   l <- list()
   for(level in levels(categorical.vector))
     l[[level]] <- factor(as.integer(categorical.vector == level))
   
-  # Returns data.frame
-  dat <- data.frame(l, check.names=FALSE)
+  # Returns data frame.
+  dat <- data.frame(l,check.names = FALSE)
   colnames(dat) <- col.names
   return(dat)
 }
@@ -182,7 +189,7 @@ len <- function(x, na.rm = TRUE) {
   return(length(x))
 }
 
-# Peter's miscellaneous functions
+# ----------------------------------------------------------------------
 # Output the string using 'cat', then move the cursor back to the
 # beginning of the string so that subsequent output will overwrite
 # this string.
