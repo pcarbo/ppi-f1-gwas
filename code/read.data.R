@@ -1,17 +1,20 @@
-# This file contains the functions to read in data
+# This file contains the functions to read in data.
 
-# Read TCF7L2 or CACNA1C phenotype data
-read.pheno <- function(pheno.filename, GENE, lines.to.skip = 0, verbose = TRUE) {
+# Read TCF7L2 or CACNA1C phenotype data.
+read.pheno <- function (pheno.filename, GENE, lines.to.skip = 0,
+                        verbose = TRUE) {
   
   if (GENE == "TCF7L2") {
-  
-    if (verbose) cat(paste0("Reading raw phenotype data from: ", pheno.filename, ".\n"))
-    pheno.data <- read.csv(pheno.filename, comment.char = "#", skip = lines.to.skip,
-                           header = TRUE, check.names = FALSE, 
-                           quote="", as.is = c("TCF7L2", "OFTtimeofday", 
-                                               "FCtimeofday", "FSTtimeofday"))
+    if (verbose)
+      cat(paste0("Reading raw phenotype data from: ",pheno.filename,".\n"))
+    pheno.data <- read.csv(pheno.filename,comment.char = "#",
+                           skip = lines.to.skip,header = TRUE,
+                           check.names = FALSE,quote = "",
+                           as.is = c("TCF7L2","OFTtimeofday", 
+                                     "FCtimeofday","FSTtimeofday"))
     
-    if (verbose) cat(paste0("Converting necessary variables to factors.\n"))
+    if (verbose)
+      cat(paste0("Converting necessary variables to factors.\n"))
     pheno.data <- transform(pheno.data,
                             TCF7L2 = factor(TCF7L2, c("WT", "HET")),
                             OFTtimeofday = factor(OFTtimeofday, c("AM", "PM")),
@@ -44,19 +47,20 @@ read.pheno <- function(pheno.filename, GENE, lines.to.skip = 0, verbose = TRUE) 
   
 }
 
-# Read residual data
-read.residual <- function(resid.filename, GENE, verbose = TRUE) {
-  if (verbose) cat(paste0("Reading in residual data from: ", resid.filename, ".\n",
-                          "Converting genotype column to factor.\n"))
+# Read residuals.
+read.residual <- function (resid.filename, GENE, verbose = TRUE) {
+  if (verbose)
+    cat(paste0("Reading in residual data from: ",resid.filename,".\n",
+               "Converting genotype column to factor.\n"))
   resid.data <- read.csv(resid.filename, header = TRUE)
   resid.data[, which(colnames(resid.data) == GENE)] <- factor(resid.data[[GENE]], c("WT", "HET"))
   return(resid.data)
 }
 
-# Read WT combined data
+# Read combined wild-type data.
 read.combined.wt <- function(combined.filename, verbose = TRUE) {
-  
-  if (verbose) cat(paste0("Reading WT combined data from: ", combined.filename, ".\n"))
+  if (verbose)
+    cat(paste0("Reading WT combined data from: ", combined.filename, ".\n"))
   combined.data <- read.csv(combined.filename, header = TRUE, check.names = FALSE, 
                             as.is = c("genotype"))
   
@@ -70,8 +74,6 @@ read.combined.wt <- function(combined.filename, verbose = TRUE) {
   
 }
 
-# Peter's data reading functions
-# ----------------------------------------------------------------------
 # Reads the Mouse Diversity Array genotypes from the CSV file, and
 # returns a list containing two list elements: "geno", the n x p
 # matrix of genotypes (which are all homozygous since these are
@@ -137,7 +139,6 @@ read.mda.F1 <- function (file) {
   # with #).
   #   d <- fread(file,sep = ",",header = TRUE,stringsAsFactors = FALSE,
   #              skip = 25, na.strings = "NA")
-  
   d <- fread(file,sep = ",",header = TRUE,stringsAsFactors = FALSE,
              na.strings = "NA")
   
