@@ -1,18 +1,3 @@
-# SUMMARY
-# -------
-# This file defines some functions that I use for QTL mapping in
-# GEMMA. Here is an overview of the functions defined in this file:
-#
-#   write.gemma.pheno(file,phenotype,pheno)
-#   write.gemma.covariates(file,covariates,pheno) 
-#   write.gemma.map(file,map)
-#   write.gemma.geno(file,geno,map)
-#   read.gemma.assoc(file)
-#   run.gemma(phenotype,covariates,pheno,geno,map,gemmadir,gemma.exe)
-#   run.gemma.norr(phenotype,covariates,pheno,geno,map,gemmadir,gemma.exe)
-#
-# FUNCTION DEFINITIONS
-# ----------------------------------------------------------------------
 # Write the phenotype data to a file in the format used by GEMMA. Each
 # line of the file contains one phenotype observation.
 write.gemma.pheno <- function (file, phenotype, pheno) {
@@ -69,7 +54,8 @@ write.gemma.geno <- function (file, geno, map) {
 # ----------------------------------------------------------------------
 # Reads in the association results from GEMMA, and returns a data
 # frame containing three columns: chromosome number ("chr"); base-pair
-# position ("pos"); and the negative base-10 logarithm of the p-value ("log10p").
+# position ("pos"); and the negative base-10 logarithm of the p-value
+# ("log10p").
 read.gemma.assoc <- function (file) {
   gwscan <- read.table(file,sep = "\t",header = TRUE,check.names = FALSE,
                   quote = "",stringsAsFactors = FALSE)
@@ -79,106 +65,6 @@ read.gemma.assoc <- function (file) {
   colnames(gwscan) <- c("chr","pos","log10p")
   
   return(gwscan)
-}
-
-# ----------------------------------------------------------------------
-# This function maps QTLs using GEMMA, writing all the files required
-# by GEMMA to the directory specified by "gemmadir". The QTLs are
-# mapped separately for each chromosome, in which the kinship matrix
-# is computed using all markers except the markers on the given
-# chromosome.
-run.gemma <- function (phenotype, covariates, pheno, geno, map,
-                       gemmadir, gemma.exe) {
-
-  # I add this to the diagonal of the kinship matrix to make sure that
-  # calculations involving this matrix are stable.
-  delta <- 0.001
-    
-  # Set the local directory to the location of the GEMMA files.
-  srcdir <- getwd()
-  setwd(gemmadir)
-
-  # Give summary of analysis.
-  n <- nrow(pheno)
-  cat("Mapping QTLs for",phenotype,"in",n,"mice, ")
-  if (!is.null(covariates)) {
-    cat("controlling for ",paste(covariates,collapse=" + "),".\n",sep="")
-  } else {
-    cat("with no covariates included.\n")
-  }
-
-  # Write the phenotype and covariate data to separate files.
-  cat("Writing phenotype and covariate data to file.\n")
-  write.gemma.pheno(paste0(gemmadir,"/pheno.txt"),phenotype,pheno)
-  write.gemma.covariates(paste0(gemmadir,"/covariates.txt"),covariates,pheno) 
-
-  # Set up the data structures used to store the results of the QTL
-  # mapping.
-  chromosomes  <- levels(map$chr)
-  scans        <- vector("list",length(chromosomes))
-  pve          <- rep(NA,length(chromosomes))
-  names(scans) <- chromosomes
-  names(pve)   <- chromosomes
-  
-  # Repeat for each chromosome.
-  for (chr in chromosomes) {
-    
-    # Compute the kinship matrix.
-    cat("Mapping QTLs on chromosome ",chr,".\n",sep="")
-    cat(" * Computing kinship matrix.\n")
-    markers <- which(map$chr != chr)
-    K <- tcrossprod(center.columns(geno[,markers])) / length(markers)
-    K <- K + diag(delta,n)
-
-    # Save the kinship matrix to a file.
-    cat(" * Writing kinship matrix to file.\n")
-    write.table(round(K,digits = 5),paste0(gemmadir,"/kinship.txt"),sep = " ",
-                quote = FALSE,row.names = FALSE,col.names = FALSE)
-
-    # Write out the mean genotypes and map information for all markers
-    # on the chromosome.
-    markers <- which(map$chr == chr)
-    cat(" * Writing to file genotypes for ",length(markers),
-        " markers on chromosome ",chr,".\n",sep="")
-    write.gemma.geno(paste0(gemmadir,"/geno.txt"),geno[,markers],map[markers,])
-    cat(" * Writing genetic map for",length(markers),"markers on chromosome",
-        chr,"to file.\n")
-    write.gemma.map(paste0(gemmadir,"/map.txt"),map[markers,])    
-
-    # Now we are finally ready to run GEMMA for all markers on the
-    # chromosome using the kinship matrix computed using all the
-    # markers *not* on the chromosome.
-    cat(" * Computing p-values for ",length(markers),
-        " markers on chromosome ",chr,".\n",sep="")
-    
-    system(paste(gemma.exe,"-g geno.txt -a map.txt -p pheno.txt",
-                 "-c covariates.txt -k kinship.txt -notsnp -lmm 2",
-                 "-lmin 0.01 -lmax 100"),
-           ignore.stdout = TRUE)
-      
-    # Load the results of the GEMMA association analysis.
-    scans[[chr]] <-
-      read.gemma.assoc(paste0(gemmadir,"/output/result.assoc.txt"))
-
-    # Get the estimate of the proportion of variance explained by the
-    # polygenic effects on all chromosomes except the current
-    # chromosome.
-    out      <- scan(paste0(gemmadir,"/output/result.log.txt"),
-                     what = "character",sep = " ",quiet = TRUE)
-    pve[chr] <- out[which(out == "pve") + 7]
-  }
-
-  # Restore the working directory.
-  setwd(srcdir)
-  
-  # Merge the mapping results from all chromosomes into a single table.
-  gwscan           <- do.call(rbind,scans)
-  rownames(gwscan) <- do.call(c,lapply(scans,rownames))
-  class(gwscan)    <- c("scanone","data.frame")
-
-  # Return the genome-wide scan and the estimates of the proportion of
-  # variance explained for each chromosome.
-  return(list(gwscan = gwscan,pve = pve))
 }
 
 # ----------------------------------------------------------------------
@@ -247,15 +133,12 @@ run.gemma.norr <- function (phenotype, covariates, pheno, geno, map,
 # mapped separately for each chromosome, in which the kinship matrix
 # is computed using all markers except the markers on the given
 # chromosome.
-run.finemap <- function (phenotype, covariates, pheno, geno, map,
-                         gemmadir, gemma.exe, K = NULL) {
+run.gemma <- function (phenotype, covariates, pheno, geno, map,
+                       gemmadir, gemma.exe, K = NULL) {
   
   # I add this to the diagonal of the kinship matrix to make sure that
   # calculations involving this matrix are stable.
   delta <- 0.001
-  
-  # Take care of optional kinsip matrix input.
-  compute.kinship <- is.null(K)
   
   # Set the local directory to the location of the GEMMA files.
   srcdir <- getwd()
@@ -288,7 +171,7 @@ run.finemap <- function (phenotype, covariates, pheno, geno, map,
     
     # Compute the kinship matrix, if necessary.
     cat("Mapping QTLs on chromosome ",chr,".\n",sep="")
-    if (compute.kinship) {
+    if (is.null(K)) {
       cat(" * Computing kinship matrix.\n")
       markers <- which(map$chr != chr)
       K <- tcrossprod(center.columns(geno[,markers])) / length(markers)
