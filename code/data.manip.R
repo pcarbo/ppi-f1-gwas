@@ -8,7 +8,7 @@ transform.pheno <- function (prepared.pheno, phenotype, transformation,
                              verbose = TRUE) {
   
   if (verbose)
-    cp0("\n*Starting transform.pheno on ",phenotype,".\n")
+    cp0("*Starting transform.pheno on ",phenotype,".\n")
   
   # Check if there is a transformation to do. Return the original
   # prepared.pheno if there isn't
@@ -38,7 +38,7 @@ remove.outliers <- function (transformed.pheno, phenotype, covariates,
                              outlier.function, outliers, verbose = TRUE) {
     
   if (verbose)
-    cp0("\n*Starting remove.outliers on ",phenotype, ".\n")
+    cp0("*Starting remove.outliers on ",phenotype, ".\n")
   
   # Check if there is an outlier function. If there isn't then don't
   # do anything. If there is, apply it and set outliers to NA.

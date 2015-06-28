@@ -12,6 +12,11 @@ none.missing.row <- function (x)
   rowSums(is.na(x)) == 0
 
 # ----------------------------------------------------------------------
+# Does the same thing as repmat(A,m,n) in MATLAB.
+repmat <- function (A,m,n)
+      return(kronecker(matrix(1,m,n),A))
+
+# ----------------------------------------------------------------------
 # Centers the columns of matrix X so that the entries in each column
 # of X add up to zero.
 center.columns <- function (X) {

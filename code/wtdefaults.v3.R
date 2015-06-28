@@ -56,7 +56,7 @@ model.info <- list(
   # Not analyzed separately in TCF.
   highmobdur = list(
     transformation   = function (x) log10(x + 0.001),
-    covariates       = c("agouti", "d100bw"),
+    covariates       = c("agouti","d100bw"),
     outlier.function = NULL,
     outliers         = NULL),
   
@@ -89,23 +89,27 @@ model.info <- list(
     outliers         = c("55232","55363","55381","55382","55613")),
   
   ppi3 = list(
-    transformation = function (x) logit10(project.onto.interval(x, 1, 99) / 100),
-    covariates       = c("ppibox3"),
+    transformation = function (x) logit10(project.onto.interval(x,1,99)/100),
+    covariates       = "ppibox3",
     outlier.function = function(x) x < (-1),
-    outliers         = c("53204","55129","55182","55325","55766","55762","50918","50988","51075",
-                 "55332","53155","55591","53569","55222","55693","53191","55750","53671","55318",
-                 "55005","53577","53480","55462","55630","55460","55541","53680","55061")),
+    outliers         = c("53204","55129","55182","55325","55766","55762",
+                         "50918","50988","51075","55332","53155","55591",
+                         "53569","55222","55693","53191","55750","53671",
+                         "55318","55005","53577","53480","55462","55630",
+                         "55460","55541","53680","55061")),
   
   ppi6 = list(
-    transformation = function (x) logit10(project.onto.interval(x, 1, 99) / 100),
-    covariates = c("ppibox3","ppibox5"),
+    transformation   = function (x) logit10(project.onto.interval(x,1,99)/100),
+    covariates       = c("ppibox3","ppibox5"),
     outlier.function = function(x) x < (-1),
-    outliers = c("53110","55129","55348","55766","55770","50916","50988","53524","53526",
-                 "55363","53585","53213","55591","55564","57057","55262","53401","50999",
-                 "55693","57034","55750","55068","53549","53116","55674","53421","55304",
-                 "55603","55095","55166","55541","55061")),
+    outliers         = c("53110","55129","55348","55766","55770","50916",
+                         "50988","53524","53526","55363","53585","53213",
+                         "55591","55564","57057","55262","53401","50999",
+                         "55693","57034","55750","55068","53549","53116",
+                         "55674","53421","55304","55603","55095","55166",
+                         "55541","55061")),
   
-  Different covariates between studies (using CAC covariates)
+  # Different covariates between studies (using CAC covariates).
   ppi12 = list(
     transformation   = function (x) logit10(project.onto.interval(x,1,99)/100),
     covariates       = c("ppibox3","ppibox5"),
@@ -158,19 +162,19 @@ model.info <- list(
   
   # Not analyzed separately in either study.
   d1fecalboli = list(
-    transformation   = function (x) qt.random.tie(x),
+    transformation   = qt.random.tie,
     covariates       = NULL,
     outlier.function = NULL,
     outliers         = NULL),
   
-  # Not analyzed separately in either study
+  # Not analyzed separately in either study.
   d2fecalboli = list(
     transformation   = qt.random.tie,
     covariates       = NULL,
     outlier.function = NULL,
     outliers         = NULL),
   
-  # Not analyzed separately in either study
+  # Not analyzed separately in either study.
   d3fecalboli = list(
     transformation   = qt.random.tie,
     covariates       = NULL,

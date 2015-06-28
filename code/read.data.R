@@ -6,7 +6,7 @@ read.combined.wt <- function (file.name, verbose = TRUE) {
   if (verbose)
     cat(paste0("Reading WT combined data from: ",file.name,".\n"))
   combined.data <- read.csv(file.name,header = TRUE,check.names = FALSE, 
-                            as.is = "genotype")
+                            as.is = "genotype",comment.char = "#")
   if (verbose)
     cat(paste0("Converting necessary variables to factors.\n"))
   return(transform(combined.data,
@@ -72,17 +72,15 @@ read.mda <- function (file) {
 # elements: "geno", the n x p matrix of genotypes, where n is the
 # number of strains, and p is the number of SNPs; "map", a data frame
 # giving the chromosome, base-pair position and alleles for each SNP.
-read.mda.F1 <- function (file) {
+read.mda.F1 <- function (file, skip = 25) {
   chromosomes <- c(1:19,"X","Y","M")
   genotypes   <- c("A","T","G","C")
   
   # Read the genotype information from the CSV file. Here I'm assuming
   # that the first 25 lines of the file are comments (lines beginning
   # with #).
-  #   d <- fread(file,sep = ",",header = TRUE,stringsAsFactors = FALSE,
-  #              skip = 25, na.strings = "NA")
   d <- fread(file,sep = ",",header = TRUE,stringsAsFactors = FALSE,
-             na.strings = "NA")
+             na.strings = "NA",skip = skip)
   
   # Discard the data.table attributes.
   class(d) <- "data.frame"
