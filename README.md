@@ -32,13 +32,21 @@ Genotyping Array web resource at Jackson Labs.
 
 + [unc.F1.csv.gz](data/unc.F1.csv.gz) Genotype data at 2,543,560 SNPs
 for F1 crosses of 29 inbred lab strains. These data were obtained from
-the UNC resource [link](http://csbio.unc.edu/imputation).
+the UNC resource ([link](http://csbio.unc.edu/imputation)).
 
 ###Overview of R source code files
 
-Here is a brief summary of the files in the [code](code) directory:
+Here is a brief summary of the key files in the [code](code) directory:
 
-*Description goes here.*
++ [map.qtls.gemma.R](data/map.qtls.gemma.R) R script for mapping QTLs
+in wild-type F1 mice using a linear mixed model (GEMMA) that corrects
+for possible confounding to due cryptic relatedness.
+
++ [finemap.qtls.gemma.R](data/finemap.qtls.gemma.R) R script for
+mapping QTLs using the higher resolution UNC SNP data.
+
++ [functions.gemma.R](data/functions.gemma.R) Defines functions used
+to map QTLs separately on each chromosome using GEMMA.
 
 ###Credits
 
