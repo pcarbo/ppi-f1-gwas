@@ -25,7 +25,7 @@ gemma.exe      <- "~/bin/gemma"
 
 # SCRIPT PARAMETERS
 # -----------------
-chromosome     <- 7
+chromosome     <- 2
 which.analysis <- "ppi12"
 resultsfile    <- "results.finemap.gemma.RData"
 
