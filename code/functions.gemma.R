@@ -143,6 +143,9 @@ run.gemma <- function (phenotype, covariates, pheno, geno, map,
   # Set the local directory to the location of the GEMMA files.
   srcdir <- getwd()
   setwd(gemmadir)
+
+  # Take care of optional kinsip matrix input.
+  compute.kinship.matrix <- is.null(K)
   
   # Give summary of analysis.
   n <- nrow(pheno)
@@ -171,7 +174,7 @@ run.gemma <- function (phenotype, covariates, pheno, geno, map,
     
     # Compute the kinship matrix, if necessary.
     cat("Mapping QTLs on chromosome ",chr,".\n",sep="")
-    if (is.null(K)) {
+    if (compute.kinship.matrix) {
       cat(" * Computing kinship matrix.\n")
       markers <- which(map$chr != chr)
       K <- tcrossprod(center.columns(geno[,markers])) / length(markers)
