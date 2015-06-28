@@ -6,7 +6,7 @@ inhibition in a panel of inbred F1 mice."
 
 ###License
 
-Copyright (c) 2014, Laura Sittig, Kyle Engel and Peter Carbonetto
+Copyright (c) 2015, Laura Sittig, Kyle Engel and Peter Carbonetto
 
 The ppi-f1-gwas project repository is free software: you can redistribute
 it and/or modify it under the terms of the
