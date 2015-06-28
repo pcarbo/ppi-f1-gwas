@@ -23,7 +23,16 @@ This program is distributed in the hope that it will be useful, but
 
 Here is a brief summary of the files in the [data](data) directory:
 
-*Description goes here.*
++ [pheno.csv](data/pheno.csv) Physiological and behavioural phenotype
+data collected on F1 mice that are crosses of inbred lab strains.
+
++ [mda.F1.csv.gz](data/mda.F1.csv.gz) Genotype data at 302,625 SNPs
+for F1 crosses of 29 inbred lab strains obtained from Mouse Diversity
+Genotyping Array web resource at Jackson Labs.
+
++ [unc.F1.csv.gz](data/unc.F1.csv.gz) Genotype data at 2,543,560 SNPs
+for F1 crosses of 29 inbred lab strains. These data were obtained from
+the UNC resource [link](http://csbio.unc.edu/imputation).
 
 ###Overview of R source code files
 

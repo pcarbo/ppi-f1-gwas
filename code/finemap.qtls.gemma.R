@@ -25,8 +25,8 @@ gemma.exe      <- "~/bin/gemma"
 
 # SCRIPT PARAMETERS
 # -----------------
-which.analysis <- "ppi3"
 chromosome     <- 2
+which.analysis <- "ppi12"
 resultsfile    <- "results.finemap.gemma.RData"
 
 # Should we remove markers that are polymorphic in only one strain?
@@ -54,7 +54,7 @@ pheno <- remove.outliers(pheno,phenotype,covariates,outliers,strain.outliers)
 
 # Remove MA strain (no genotype data is available for MA).
 pheno        <- subset(pheno,strain != "MA")
-pheno        <- pheno[order(pheno$strain), ]
+pheno        <- pheno[order(pheno$strain),]
 pheno$strain <- droplevels(pheno$strain)
 
 # Only include samples in the analysis for which the phenotype and all
@@ -77,8 +77,8 @@ cat("Loading MDA genotype data for computing kinship matrix.\n")
 d    <- read.mda.F1(mda.filename)
 map  <- d$map
 geno <- d$geno
-geno <- geno[order(rownames(geno)), ]
-map  <- cbind(data.frame(snp = rownames(map)), map)
+geno <- geno[order(rownames(geno)),]
+map  <- cbind(data.frame(snp = rownames(map)),map)
 rownames(map) <- NULL
 rm(d)
 
@@ -113,10 +113,9 @@ rm(map,geno,markers,n)
 # ----------------------
 cat("Loading UNC genotype data.\n")
 
-stop()
-
-# Note that the read.mda.F1 function can also be used on UNC data.
-d    <- read.mda.F1(unc.filename,skip = )
+# Note that the same read.mda.F1 function can also be used to read in
+# the UNC genotype data.
+d    <- read.mda.F1(unc.filename,skip = 32)
 map  <- d$map
 geno <- d$geno
 map  <- cbind(data.frame(snp = rownames(map)), map)
@@ -130,9 +129,9 @@ geno    <- geno[,markers]
 
 # Remove markers that are polymorphic in only one strain if specified
 if (extra.filter) {
-  markers <- which(apply(geno, 2, function (x) sum(x) > 1))
-  map <- map[markers, ]
-  geno <- geno[, markers]
+  markers <- which(apply(geno,2,function (x) sum(x) > 1))
+  map     <- map[markers,]
+  geno    <- geno[,markers]
 }
 
 # Align the phenotypes and UNC genotypes.
@@ -140,8 +139,8 @@ geno <- geno[match(pheno$strain,rownames(geno)),]
 rm(markers)
 
 # Map QTLs using a kinship matrix estimated from the MDA SNP panel.
-out          <- run.finemap(phenotype,covariates,pheno,geno,map,
-                            gemmadir,gemma.exe,K)
+out          <- run.gemma(phenotype,covariates,pheno,geno,map,
+                          gemmadir,gemma.exe,K = K)
 gwscan.gemma <- out$gwscan
 pve.gemma    <- out$pve
 
