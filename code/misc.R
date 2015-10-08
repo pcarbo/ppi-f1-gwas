@@ -6,6 +6,13 @@ cp0 <- function (...)
   cat(paste0(...))
 
 # ----------------------------------------------------------------------
+# Output the string using 'cat', then move the cursor back to the
+# beginning of the string so that subsequent output will overwrite
+# this string.
+caterase <- function (s)
+    cat(s,rep("\b",nchar(s)),sep="")
+
+# ----------------------------------------------------------------------
 # For each row of the matrix or data frame, returns true if all the
 # entries in the row are provided (not missing).
 none.missing.row <- function (x)
