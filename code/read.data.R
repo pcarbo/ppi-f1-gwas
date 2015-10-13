@@ -80,7 +80,8 @@ read.mda.F1 <- function (file, skip = 25) {
   # that the first 25 lines of the file are comments (lines beginning
   # with #).
   d <- fread(file,sep = ",",header = TRUE,stringsAsFactors = FALSE,
-             na.strings = "NA",skip = skip)
+             colClasses = list(character = "chr"),na.strings = "NA",
+             skip = skip)
   
   # Discard the data.table attributes.
   class(d) <- "data.frame"

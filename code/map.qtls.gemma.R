@@ -94,9 +94,11 @@ geno    <- geno[,markers]
   
 # Align the phenotypes and genotypes.
 geno <- geno[match(pheno$strain,rownames(geno)),]
-  
+
 # Initialize the random number generator.
 set.seed(seed)
+
+stop()
 
 # MAP QTLs USING GEMMA
 # --------------------
