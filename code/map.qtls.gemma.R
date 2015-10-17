@@ -98,8 +98,6 @@ geno <- geno[match(pheno$strain,rownames(geno)),]
 # Initialize the random number generator.
 set.seed(seed)
 
-stop()
-
 # MAP QTLs USING GEMMA
 # --------------------
 if (use.kinship) {
