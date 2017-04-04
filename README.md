@@ -4,7 +4,7 @@ This repository contains code and data to accompany publication of the
 manuscript (in review), "Genome-wide association for prepulse
 inhibition in a panel of inbred F1 mice."
 
-###License
+### License
 
 Copyright (c) 2015, Laura Sittig, Kyle Engel and Peter Carbonetto
 
@@ -19,7 +19,7 @@ This program is distributed in the hope that it will be useful, but
 **merchantability** or **fitness for a particular purpose**. See
 [LICENSE](LICENSE) for more details.
 
-###Overview of data files
+### Overview of data files
 
 Here is a brief summary of the files in the [data](data) directory:
 
@@ -34,7 +34,7 @@ Genotyping Array web resource at Jackson Labs.
 for F1 crosses of 29 inbred lab strains. These data were obtained from
 the UNC resource ([link](http://csbio.unc.edu/imputation)).
 
-###Overview of R source code files
+### Overview of R source code files
 
 Here is a brief summary of the key files in the [code](code) directory:
 
@@ -48,7 +48,7 @@ mapping QTLs using the higher resolution UNC SNP data.
 + [functions.gemma.R](data/functions.gemma.R) Defines functions used
 to map QTLs separately on each chromosome using GEMMA.
 
-###Credits
+### Credits
 
 The R code implementing the analysis procedures was developed by:<br>
 Laura Sittig, Kyle Engel and Peter Carbonetto<br>
